@@ -18,20 +18,21 @@ function initTimeline() {
     if (!container) return;
     container.innerHTML = '';
     
-    // Mélange aléatoire des photos au début
+    // Mélange aléatoire
     const shuffled = [...timelineData].sort(() => Math.random() - 0.5);
 
     shuffled.forEach(item => {
         const div = document.createElement('div');
-        div.className = "bg-white/10 p-2 rounded-2xl border border-white/20 flex items-center gap-3 cursor-move touch-none active:scale-95 transition-transform shadow-lg mb-2";
+        // Ajout de 'select-none' pour éviter le menu copier/coller de l'iPhone
+        div.className = "bg-white/10 p-2 rounded-2xl border border-white/20 flex items-center gap-3 cursor-move touch-none select-none active:scale-95 transition-transform shadow-lg mb-2";
         div.draggable = true;
         div.dataset.id = item.id;
         
         div.innerHTML = `
-            <div class="w-16 h-16 flex-shrink-0 overflow-hidden rounded-xl border border-white/30">
+            <div class="w-16 h-16 flex-shrink-0 overflow-hidden rounded-xl border border-white/30 pointer-events-none">
                 <img src="img/${item.id}.jpg" class="w-full h-full object-cover">
             </div>
-            <div class="flex-grow">
+            <div class="flex-grow pointer-events-none">
                 <p class="text-white font-bold text-[11px] uppercase tracking-tighter">${item.text}</p>
             </div>
             <div class="text-white/20 text-xl pr-1">≡</div>
@@ -49,14 +50,14 @@ function setupDragAndDrop(el) {
     const container = document.getElementById('timeline-container');
     container.addEventListener('dragover', e => {
         e.preventDefault();
-        const afterElement = getDragAfterElement(container, e.clientY);
         const draggable = document.querySelector('.opacity-40');
-        if (draggable) {
-            if (afterElement == null) {
-                container.appendChild(draggable);
-            } else {
-                container.insertBefore(draggable, afterElement);
-            }
+        if (!draggable) return;
+
+        const afterElement = getDragAfterElement(container, e.clientY);
+        if (afterElement == null) {
+            container.appendChild(draggable);
+        } else {
+            container.insertBefore(draggable, afterElement);
         }
     });
 }
@@ -73,24 +74,22 @@ function getDragAfterElement(container, y) {
         }
     }, { offset: Number.NEGATIVE_INFINITY }).element;
 }
+
 function checkTimeline() {
     const container = document.getElementById('timeline-container');
     const statusEl = document.getElementById('timeline-status');
     const currentOrder = Array.from(container.children).map(child => child.dataset.id).join('');
     
-    // L'ordre gagnant est la suite alphabétique
     const winningOrder = "ABCDEFGHIJKL";
 
     if (currentOrder === winningOrder) {
         showTimelineVictory();
     } else {
-        // --- NOUVELLE GESTION DE L'ERREUR ---
         if (statusEl) {
             statusEl.innerText = "Ce n'est pas encore le bon ordre ! Réessaie mon amour ❤️";
-            statusEl.className = "mb-6 p-4 rounded-2xl font-bold uppercase text-xs shadow-2xl bg-red-500/80 text-white border border-red-400 animate-bounce block";
+            statusEl.className = "mb-6 p-4 rounded-2xl font-bold uppercase text-xs shadow-2xl bg-red-500/80 text-white border border-red-400 animate-bounce block text-center";
             statusEl.classList.remove('hidden');
 
-            // Le message disparaît après 3 secondes
             setTimeout(() => {
                 statusEl.classList.add('hidden');
                 statusEl.classList.remove('animate-bounce');
@@ -102,7 +101,7 @@ function checkTimeline() {
 function showTimelineVictory() {
     const container = document.getElementById('timeline-container').parentElement;
     container.innerHTML = `
-        <div class="text-center py-10 animate-[fadeIn_0.5s_ease-in]">
+        <div class="text-center py-10">
             <span class="text-7xl mb-6 block animate-bounce">🏆</span>
             <h2 class="text-3xl font-black text-white uppercase mb-4 tracking-tighter">Bravo mon amour !</h2>
             <p class="text-white opacity-90 mb-10 italic px-6 leading-relaxed">Tu connais notre histoire sur le bout des doigts. Chaque moment avec toi est mon préféré ❤️</p>
