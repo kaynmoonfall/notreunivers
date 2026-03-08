@@ -7,6 +7,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/drag-drop-touch@1.1.0/drag-drop-touch.js"></script>
 <style>
+
+    /* Empêche le téléphone de scroller quand on déplace un souvenir */
+[draggable="true"] {
+    -webkit-user-drag: element;
+    user-select: none;
+    touch-action: none; /* TRÈS IMPORTANT pour mobile */
+    -webkit-tap-highlight-color: transparent;
+}
+
+#timeline-container {
+    touch-action: none; /* Bloque le scroll dans la zone de jeu */
+    overflow: hidden;
+}
+    
     body { 
     /* Remplace 'bg-main.jpg' par le nom de ton image de fond générale */
     background: url('img/bg-main.jpg') no-repeat center center fixed; 
@@ -433,4 +447,5 @@
     </script>
 </body>
 </html>
+
 
