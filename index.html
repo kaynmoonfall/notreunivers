@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Notre Univers ❤️</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/drag-drop-touch@1.1.0/drag-drop-touch.js"></script>
@@ -20,15 +20,30 @@
     touch-action: none; /* Bloque le scroll dans la zone de jeu */
     overflow: hidden;
 }
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    [draggable="true"] {
+        -webkit-user-drag: element;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: none !important; /* Force le retrait du scroll sur l'élément */
+    }
+
+    #timeline-container {
+        touch-action: none !important;
+        -webkit-user-select: none;
+        user-select: none;
+    }
     
-    body { 
-    /* Remplace 'bg-main.jpg' par le nom de ton image de fond générale */
-    background: url('img/bg-main.jpg') no-repeat center center fixed; 
-    background-size: cover;
-    min-height: 100vh; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow-x: hidden;
-}
+   body { 
+        background: url('img/bg-main.jpg') no-repeat center center fixed; 
+        background-size: cover;
+        min-height: 100vh; 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow-x: hidden;
+    }
     .glass {
         background: rgba(255, 255, 255, 0.2);
         backdrop-filter: blur(10px);
@@ -447,5 +462,6 @@
     </script>
 </body>
 </html>
+
 
 
